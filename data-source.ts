@@ -5,8 +5,8 @@ export default new DataSource({
   url: process.env.DATABASE_URL,
   synchronize: false,
   logging: true,
-  entities: ['dist/src/**/*.entity.js'],
-  migrations: ['dist/src/migrations/*.js'],
+  entities: ['dist/**/*.entity.js'],
+  migrations: ['dist/migrations/*.js'],
   ssl:
     process.env.NODE_ENV === 'production'
       ? { rejectUnauthorized: false }
