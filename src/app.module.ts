@@ -22,7 +22,7 @@ import { MockdataModule } from './mockdata/mockdata.module';
           url: dbUrl,
           // autoLoadEntities: true,
           entities: [__dirname + '/**/*.entity.{js,ts}'],
-          synchronize: true,
+          synchronize: false,
           ssl:
             process.env.NODE_ENV == 'production'
               ? { rejectUnauthorized: false }
