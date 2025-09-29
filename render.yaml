@@ -20,7 +20,7 @@ services:
       - key: PORT
         value: 10000 # Render sets PORT; respect it in Nest (see note below)
       - key: JWT_SECRET
-        sync: true # set in dashboard after first deploy
+        sync: false # set in dashboard after first deploy
       - key: CORS_ORIGIN
         sync: false # set in dashboard after first deploy
       - key: DATABASE_URL
