@@ -22,10 +22,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:generate": "pnpm build && pnpm typeorm migration:generate",
-    "migration:run": "pnpm build && pnpm typeorm migration:run",
-    "migration:revert": "pnpm build && pnpm typeorm migration:revert",
-    "prestart": "pnpm build && pnpm migration:run"
+    "migration:run": "node ./node_modules/typeorm/cli.js migration:run -d dist/data-source.js",
+    "prestart:prod": "pnpm build && pnpm migration:run"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
