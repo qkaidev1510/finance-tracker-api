@@ -14,7 +14,7 @@ services:
         pnpm install --no-frozen-lockfile
       fi
       pnpm build
-    startCommand: node dist/main.js
+    startCommand: pnpm start:prod
     envVars:
       - key: NODE_ENV
         value: production
