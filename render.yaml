@@ -4,7 +4,6 @@ services:
     env: node
     region: oregon
     plan: free
-    healthCheckPath: /health
     autoDeploy: true
     buildCommand: |
       corepack enable
@@ -30,6 +29,7 @@ services:
           name: finance-tracker-db
           property: connectionString
     startCommand: pnpm start:prod
+    healthCheckPath: /health
 
 databases:
   - name: finance-tracker-db

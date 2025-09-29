@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Head } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './decorators/public.decorator';
 
@@ -8,7 +8,11 @@ export class AppController {
 
   @Public()
   @Get('/health')
-  healthCheck() {
+  getCheck() {
     return { status: 'OK' };
   }
+
+  @Public()
+  @Head('/health')
+  healCheck() {}
 }
