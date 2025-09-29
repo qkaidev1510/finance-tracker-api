@@ -20,7 +20,8 @@ import { MockdataModule } from './mockdata/mockdata.module';
           return {
             type: 'postgres',
             url: dbUrl,
-            autoLoadEntities: true,
+            // autoLoadEntities: true,
+            entities: [__dirname + '/**/*.entity.{js,ts}'],
             synchronize: false,
             ssl: { rejectUnauthorized: false },
           };
