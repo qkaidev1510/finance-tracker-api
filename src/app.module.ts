@@ -16,27 +16,18 @@ import { MockdataModule } from './mockdata/mockdata.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         const dbUrl = config.get<string>('DATABASE_URL');
-        if (dbUrl) {
-          return {
-            type: 'postgres',
-            url: dbUrl,
-            // autoLoadEntities: true,
-            entities: [__dirname + '/**/*.entity.{js,ts}'],
-            synchronize: false,
-            ssl: { rejectUnauthorized: false },
-          };
-        } else {
-          return {
-            type: 'postgres',
-            host: 'localhost',
-            port: 5432,
-            username: 'admin123',
-            password: 'admin123',
-            database: 'finance_db',
-            autoLoadEntities: true,
-            synchronize: false,
-          };
-        }
+
+        return {
+          type: 'postgres',
+          url: dbUrl,
+          // autoLoadEntities: true,
+          entities: [__dirname + '/**/*.entity.{js,ts}'],
+          synchronize: true,
+          ssl:
+            process.env.NODE_ENV == 'production'
+              ? { rejectUnauthorized: false }
+              : false,
+        };
       },
     }),
     UserModule,
