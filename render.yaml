@@ -14,20 +14,20 @@ services:
         pnpm install --no-frozen-lockfile
       fi
       pnpm build
-    startCommand: pnpm start:prod
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000 # Render sets PORT; respect it in Nest (see note below)
       - key: JWT_SECRET
-        sync: false # set in dashboard after first deploy
+        sync: true # set in dashboard after first deploy
       - key: CORS_ORIGIN
         sync: false # set in dashboard after first deploy
       - key: DATABASE_URL
         fromDatabase:
           name: finance-tracker-db
           property: connectionString
+    startCommand: pnpm start:prod
 
 databases:
   - name: finance-tracker-db
