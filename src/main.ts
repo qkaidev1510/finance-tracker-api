@@ -6,6 +6,9 @@ import { AllExceptionsFilter } from './middlewares/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const port = Number(process.env.port) || 3000;
+  const corsOrigin =
+    process.env.CORS_ORIGIN?.split(',').map((s) => s.trim()) ?? true;
 
   const config = new DocumentBuilder()
     .setTitle('Fiance Tracker API')
@@ -19,6 +22,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
-  await app.listen(3000);
+  app.enableCors({ origin: corsOrigin });
+
+  await app.listen(port);
 }
 bootstrap();

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Budget, ETransactionType, Transaction, User } from 'src/entities';
 import { Repository } from 'typeorm';
+import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class MockdataService {
@@ -18,19 +19,25 @@ export class MockdataService {
 
   async mockUsers() {
     try {
-      const { faker } = await import('@faker-js/faker');
       const users = [];
+      const batchSize = 1000;
 
       for (let i = 0; i < 50000; i++) {
         const user = this.userRepository.create({
-          username: faker.internet.username(),
+          username: faker.internet.userName(),
           pwdHash: faker.internet.password(),
         });
 
         users.push(user);
+
+        if (users.length >= batchSize) {
+          await this.userRepository.save(users);
+          users.length = 0;
+        }
       }
 
       await this.userRepository.save(users);
+
       console.log('50000 Users Have Been Created!!!');
     } catch (error) {
       console.log(error);
@@ -38,24 +45,31 @@ export class MockdataService {
   }
 
   async mockTransactions() {
-    const { faker } = await import('@faker-js/faker');
     const users = await this.userRepository.find({});
+    const batchSize = 1000;
 
     const transactions = [];
 
     for (let i = 0; i < users.length; i++) {
       for (let j = 0; j < 2; j++) {
-        const transaction = new Transaction();
-        transaction.user = users[i];
-        transaction.amount = parseFloat(faker.finance.amount());
-        transaction.category = faker.commerce.department();
-        transaction.type =
-          Math.random() > 0.5
-            ? ETransactionType.Income
-            : ETransactionType.Expense;
-        transaction.date = faker.date.recent();
-        transaction.note = faker.lorem.sentence();
+        const transaction = this.transactionRepository.create({
+          user: users[i],
+          amount: parseFloat(faker.finance.amount()),
+          category: faker.commerce.department(),
+          type:
+            Math.random() > 0.5
+              ? ETransactionType.Income
+              : ETransactionType.Expense,
+          date: faker.date.recent(),
+          note: faker.lorem.sentence(),
+        });
+
         transactions.push(transaction);
+
+        if (transactions.length >= batchSize) {
+          await this.transactionRepository.save(transactions);
+          transactions.length = 0;
+        }
       }
     }
 
@@ -64,8 +78,8 @@ export class MockdataService {
   }
 
   async mockBudgetData() {
-    const { faker } = await import('@faker-js/faker');
     const users = await this.userRepository.find({});
+    const batchSize = 1000;
 
     if (users.length == 0) return;
 
@@ -89,6 +103,11 @@ export class MockdataService {
         budget.startDate = faker.date.past({ years: 1 }); // Start date within the last year
         budget.endDate = faker.date.future({ years: 1 }); // End date within the next year
         budgets.push(budget);
+
+        if (budgets.length >= batchSize) {
+          await this.budgetRepository.save(budgets);
+          budgets.length = 0;
+        }
       }
     }
 

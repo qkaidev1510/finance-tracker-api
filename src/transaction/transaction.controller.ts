@@ -12,8 +12,8 @@ import { TransactionService } from './transaction.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Transaction } from 'src/entities/transaction.entity';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { User } from 'src/entities/user.entity';
 import { CreateTransactionRequestDto } from 'src/dtos';
+import { ICurrentUser } from 'src/interfaces/current-user.interface';
 
 @Controller('transaction')
 export class TransactionController {
@@ -21,14 +21,17 @@ export class TransactionController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body: CreateTransactionRequestDto, @CurrentUser() user: User) {
-    return this.transactionService.create(body, user);
+  create(
+    @Body() body: CreateTransactionRequestDto,
+    @CurrentUser() user: ICurrentUser,
+  ) {
+    return this.transactionService.create(body, user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@CurrentUser() user: User) {
-    return this.transactionService.findAll(user.id);
+  findAll(@CurrentUser() user: ICurrentUser) {
+    return this.transactionService.findAll(user.userId);
   }
 
   @UseGuards(JwtAuthGuard)

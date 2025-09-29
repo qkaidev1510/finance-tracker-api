@@ -59,8 +59,8 @@ dependencies:
 
 devDependencies:
   '@faker-js/faker':
-    specifier: ^10.0.0
-    version: 10.0.0
+    specifier: ^9.0.0
+    version: 9.0.0
   '@nestjs/cli':
     specifier: ^10.0.0
     version: 10.0.0
@@ -547,9 +547,10 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@faker-js/faker@10.0.0:
-    resolution: {integrity: sha512-UollFEUkVXutsaP+Vndjxar40Gs5JL2HeLcl8xO1QAjJgOdhc3OmBFWyEylS+RddWaaBiAzH+5/17PLQJwDiLw==}
-    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
+  /@faker-js/faker@9.0.0:
+    resolution: {integrity: sha512-dTDHJSmz6c1OJ6HO7jiUiIb4sB20Dlkb3pxYsKm0qTXm2Bmj97rlXIhlvaFsW2rvCi+OLlwKLVSS6ZxFUVZvjQ==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
     dev: true
 
   /@humanwhocodes/config-array@0.11.14:
