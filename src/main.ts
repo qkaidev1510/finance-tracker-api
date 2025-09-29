@@ -6,7 +6,7 @@ import { AllExceptionsFilter } from './middlewares/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = parseInt(process.env.port ?? '3000', 10);
+  const port = Number(process.env.PORT ?? 3000);
   const corsOrigin =
     process.env.CORS_ORIGIN?.split(',').map((s) => s.trim()) ?? true;
 
