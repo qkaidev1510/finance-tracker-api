@@ -7,12 +7,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Public()
-  @Get('/health')
+  @Get('health')
   getCheck() {
     return { status: 'OK' };
   }
 
   @Public()
-  @Head('/health')
+  @Head('health')
   healCheck() {}
 }
