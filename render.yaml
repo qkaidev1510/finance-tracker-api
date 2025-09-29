@@ -8,7 +8,11 @@ services:
     autoDeploy: true
     buildCommand: |
       corepack enable
-      pnpm install --frozen-lockfile
+      if [-f pnpm-lock.yaml]; then
+        pnpm install --frozen-lockfile
+      else
+        pnpm install --no-frozen-lockfile
+      fi
       pnpm build
     startCommand: node dist/main.js
     envVars:
