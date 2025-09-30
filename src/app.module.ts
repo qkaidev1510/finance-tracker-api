@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,6 +9,8 @@ import { TransactionModule } from './transaction/transaction.module';
 import { SummaryModule } from './summary/summary.module';
 import { BudgetModule } from './budget/budget.module';
 import { MockdataModule } from './mockdata/mockdata.module';
+import { LoggerModule } from './logger/logger.module';
+import { RequestContextMiddleware } from './middlewares/request-context.middleware';
 
 @Module({
   imports: [
@@ -20,7 +22,6 @@ import { MockdataModule } from './mockdata/mockdata.module';
         return {
           type: 'postgres',
           url: dbUrl,
-          // autoLoadEntities: true,
           entities: [__dirname + '/**/*.entity.{js,ts}'],
           synchronize: false,
           ssl:
@@ -39,8 +40,13 @@ import { MockdataModule } from './mockdata/mockdata.module';
     SummaryModule,
     BudgetModule,
     MockdataModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestContextMiddleware).forRoutes('*');
+  }
+}

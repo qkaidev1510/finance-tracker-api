@@ -3,12 +3,15 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './middlewares/all-exceptions.filter';
+import { RequestLoggingInterceptor } from './middlewares/request-logging.interceptor';
+import { AppLoggerService } from './logger/logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = Number(process.env.PORT ?? 3000);
   const corsOrigin =
     process.env.CORS_ORIGIN?.split(',').map((s) => s.trim()) ?? true;
+  const logger = app.get(AppLoggerService);
 
   const config = new DocumentBuilder()
     .setTitle('Fiance Tracker API')
@@ -22,6 +25,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new RequestLoggingInterceptor(logger));
   app.enableCors({ origin: corsOrigin });
 
   await app.listen(port, '0.0.0.0');
