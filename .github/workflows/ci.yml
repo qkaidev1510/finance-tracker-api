@@ -15,13 +15,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node 20 + pnpm cache
+      - name: Setup Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Enable Corepack
         run: corepack enable
+
+      - name: Pin pnpm version
+        run: corepack prepare pnpm@10.17.1 --activate
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
@@ -31,3 +34,10 @@ jobs:
 
       - name: Run unit tests with coverage (fails if <80%)
         run: pnpm test:cov
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
