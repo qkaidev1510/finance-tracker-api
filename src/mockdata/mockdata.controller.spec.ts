@@ -33,7 +33,7 @@ describe('MockdataController', () => {
     it('calls mockUsers when table=user', async () => {
       service.mockUsers.mockResolvedValueOnce('users-done');
 
-      const res = await controller.mockdata({ table: 'user' });
+      const res = await controller.mockdata({ table: 'user', quantity: 2 });
 
       expect(service.mockUsers).toHaveBeenCalledTimes(1);
       expect(service.mockTransactions).not.toHaveBeenCalled();
@@ -44,7 +44,10 @@ describe('MockdataController', () => {
     it('calls mockTransactions when table=transaction', async () => {
       service.mockTransactions.mockResolvedValueOnce('tx-done');
 
-      const res = await controller.mockdata({ table: 'transaction' });
+      const res = await controller.mockdata({
+        table: 'transaction',
+        quantity: 2,
+      });
 
       expect(service.mockTransactions).toHaveBeenCalledTimes(1);
       expect(service.mockUsers).not.toHaveBeenCalled();
@@ -55,7 +58,7 @@ describe('MockdataController', () => {
     it('calls mockBudgetData when table=budget', async () => {
       service.mockBudgetData.mockResolvedValueOnce('budget-done');
 
-      const res = await controller.mockdata({ table: 'budget' });
+      const res = await controller.mockdata({ table: 'budget', quantity: 2 });
 
       expect(service.mockBudgetData).toHaveBeenCalledTimes(1);
       expect(service.mockUsers).not.toHaveBeenCalled();
@@ -64,7 +67,7 @@ describe('MockdataController', () => {
     });
 
     it('returns undefined for unknown table', async () => {
-      const res = await controller.mockdata({ table: 'unknown' });
+      const res = await controller.mockdata({ table: 'unknown', quantity: 2 });
 
       expect(service.mockUsers).not.toHaveBeenCalled();
       expect(service.mockTransactions).not.toHaveBeenCalled();

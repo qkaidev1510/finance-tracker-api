@@ -91,7 +91,7 @@ describe('MockdataService', () => {
       }));
 
       // Act
-      await service.mockTransactions();
+      await service.mockTransactions(2);
 
       // Assert
       // 2 per user → 6 total created
@@ -116,7 +116,7 @@ describe('MockdataService', () => {
     it('handles zero users gracefully (still calls final save with empty array)', async () => {
       (userRepo.find as jest.Mock).mockResolvedValueOnce([]);
 
-      await service.mockTransactions();
+      await service.mockTransactions(2);
 
       expect(txRepo.create).not.toHaveBeenCalled();
       // The implementation saves even the (empty) remainder at the end
