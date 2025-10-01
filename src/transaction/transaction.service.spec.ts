@@ -5,6 +5,7 @@ import { TransactionService } from './transaction.service';
 import { Transaction } from 'src/entities/transaction.entity';
 import { User } from 'src/entities/user.entity';
 import { CreateTransactionRequestDto } from 'src/dtos';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 type MockRepo<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 
@@ -12,6 +13,7 @@ describe('TransactionService', () => {
   let service: TransactionService;
   let txRepo: MockRepo<Transaction>;
   let userRepo: MockRepo<User>;
+  let cacheManager: any;
 
   const userId = 'user-123';
   const mockUser: Partial<User> = { id: userId, username: 'alice' };
@@ -37,11 +39,17 @@ describe('TransactionService', () => {
       findOne: jest.fn(),
     };
 
+    cacheManager = {
+      get: jest.fn(),
+      set: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TransactionService,
         { provide: getRepositoryToken(Transaction), useValue: txRepo },
         { provide: getRepositoryToken(User), useValue: userRepo },
+        { provide: CACHE_MANAGER, useValue: cacheManager },
       ],
     }).compile();
 

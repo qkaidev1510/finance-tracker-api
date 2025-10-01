@@ -10,6 +10,7 @@ import { BudgetModule } from './budget/budget.module';
 import { MockdataModule } from './mockdata/mockdata.module';
 import { LoggerModule } from './logger/logger.module';
 import { RequestContextMiddleware } from './middlewares/request-context.middleware';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { RequestContextMiddleware } from './middlewares/request-context.middlewa
     BudgetModule,
     MockdataModule,
     LoggerModule,
+    CacheModule.register({ isGlobal: true }),
   ],
   controllers: [AppController],
   providers: [],

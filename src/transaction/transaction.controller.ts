@@ -16,10 +16,10 @@ import { CreateTransactionRequestDto } from 'src/dtos';
 import { ICurrentUser } from 'src/interfaces/current-user.interface';
 
 @Controller('transaction')
+@UseGuards(JwtAuthGuard)
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(
     @Body() body: CreateTransactionRequestDto,
@@ -28,19 +28,21 @@ export class TransactionController {
     return this.transactionService.create(body, user.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@CurrentUser() user: ICurrentUser) {
     return this.transactionService.findAll(user.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Get('cache')
+  findAllWithCache(@CurrentUser() user: ICurrentUser) {
+    return this.transactionService.findAllWithCache(user.userId);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateData: Partial<Transaction>) {
     return this.transactionService.update(id, updateData);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.transactionService.remove(id);

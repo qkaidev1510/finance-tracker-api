@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTransactionRequestDto } from 'src/dtos';
 import { Transaction } from 'src/entities/transaction.entity';
@@ -12,6 +13,7 @@ export class TransactionService {
     private readonly transactionRepository: Repository<Transaction>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async create(dto: CreateTransactionRequestDto, userId: string) {
@@ -36,6 +38,32 @@ export class TransactionService {
 
   async findAll(userId: string) {
     return this.transactionRepository.find({ where: { user: { id: userId } } });
+  }
+
+  async findAllWithCache(userId: string) {
+    const key = `transactions-${userId}`;
+
+    const cachedValue = await this.cacheManager.get<Transaction[]>(key);
+
+    if (cachedValue) {
+      console.log('=== GET CACHE ===');
+      console.log(`=== ${cachedValue.length} RECORDS ===`);
+      return cachedValue;
+    }
+
+    const transactions = await this.transactionRepository.find({
+      where: { user: { id: userId } },
+    });
+
+    await this.cacheManager.set<Transaction[]>(
+      key,
+      transactions,
+      1000 * 60 * 60, // 1 hour
+    );
+
+    console.log(`==== ${transactions.length} RECORDS ===`);
+
+    return transactions;
   }
 
   async update(id: string, updateData: Partial<Transaction>) {
