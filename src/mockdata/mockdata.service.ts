@@ -50,11 +50,11 @@ export class MockdataService {
 
     const transactions = [];
 
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < 10; i++) {
       for (let j = 0; j < quantity; j++) {
         const transaction = this.transactionRepository.create({
           user: users[i],
-          amount: parseFloat(faker.finance.amount()),
+          amount: Math.round(Number(faker.finance.amount())),
           category: faker.commerce.department(),
           type:
             Math.random() > 0.5
