@@ -17,12 +17,12 @@ export class MockdataService {
     private readonly budgetRepository: Repository<Budget>,
   ) {}
 
-  async mockUsers() {
+  async mockUsers(quantity: number) {
     try {
       const users = [];
       const batchSize = 1000;
 
-      for (let i = 0; i < 50000; i++) {
+      for (let i = 0; i < quantity; i++) {
         const user = this.userRepository.create({
           username: faker.internet.userName(),
           pwdHash: faker.internet.password(),
@@ -38,20 +38,20 @@ export class MockdataService {
 
       await this.userRepository.save(users);
 
-      console.log('50000 Users Have Been Created!!!');
+      console.log(`${quantity} Users Have Been Created!!!`);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async mockTransactions() {
+  async mockTransactions(quantity: number) {
     const users = await this.userRepository.find({});
     const batchSize = 1000;
 
     const transactions = [];
 
     for (let i = 0; i < users.length; i++) {
-      for (let j = 0; j < 2; j++) {
+      for (let j = 0; j < quantity; j++) {
         const transaction = this.transactionRepository.create({
           user: users[i],
           amount: parseFloat(faker.finance.amount()),
@@ -74,7 +74,7 @@ export class MockdataService {
     }
 
     await this.transactionRepository.save(transactions);
-    console.log('100000 Transactions Have Been Created');
+    console.log(`${quantity} Transactions Have Been Created For Each User`);
   }
 
   async mockBudgetData() {

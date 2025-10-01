@@ -8,11 +8,12 @@ export class MockdataController {
   constructor(private readonly mockdataService: MockdataService) {}
 
   @Post()
-  async mockdata(@Body() body: { table: string }) {
-    if (body.table == 'user') return this.mockdataService.mockUsers();
+  async mockdata(@Body() body: { table: string; quantity: number }) {
+    if (body.table == 'user')
+      return this.mockdataService.mockUsers(body.quantity);
 
     if (body.table == 'transaction')
-      return this.mockdataService.mockTransactions();
+      return this.mockdataService.mockTransactions(body.quantity);
 
     if (body.table == 'budget') return this.mockdataService.mockBudgetData();
   }
