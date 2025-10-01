@@ -6,10 +6,10 @@ import { User } from 'src/entities/user.entity';
 import { SummaryService } from './summary.service';
 
 @Controller('summary')
+@UseGuards(JwtAuthGuard)
 export class SummaryController {
   constructor(private readonly summaryService: SummaryService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('monthly')
   getMonthlySummary(
     @CurrentUser() user: User,
@@ -18,7 +18,6 @@ export class SummaryController {
     return this.summaryService.getMonthlySummary(user, query);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('by-category')
   getSummaryByCategory(
     @CurrentUser() user: User,
