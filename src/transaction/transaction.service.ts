@@ -39,7 +39,7 @@ export class TransactionService {
   async findAll(userId: string) {
     return this.transactionRepository.find({
       where: { user: { id: userId } },
-      take: 1000,
+      take: 100000,
     });
   }
 
@@ -56,7 +56,7 @@ export class TransactionService {
 
     const transactions = await this.transactionRepository.find({
       where: { user: { id: userId } },
-      take: 1000,
+      take: 100000,
     });
 
     await this.cacheManager.set<Transaction[]>(
