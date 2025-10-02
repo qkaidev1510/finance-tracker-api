@@ -125,7 +125,7 @@ describe('TransactionService', () => {
 
       expect(txRepo.find).toHaveBeenCalledWith({
         where: { user: { id: userId } },
-        take: 1000000,
+        take: 10000,
       });
       expect(result).toBe(items);
     });
