@@ -122,42 +122,90 @@ PostgreSQL DB
 
 ## Load & Stress Test Results
 
-We performed comprehensive **performance testing** using **k6** to evaluate the Finance Tracker API under high load and compare cached vs non-cached endpoints.
+We performed comprehensive **performance testing** using **k6** to evaluate the Finance Tracker API under high load and compare **cached vs non-cached endpoints**.
 
-### 1. Setup
+### 1. Testing Context
 
-- **Endpoints tested:**
+- **Server / Render instance:**: 1 server instance + two testing backend APIs (cached and non-cached)
+- **CPU:** 0.5 vCPU (Render free / standard instance)
+- **RAM:** 512 MB
+- **Network:** Public Render subdomain, 100GB bandwidth per month
+- **Endpoints Tested:**
   - `/transaction` (non-cached)
   - `/transaction/cache` (in-memory cache)
 - **Tool:** k6
-- **Test Scenarios:**
-  - **Load Test:** 50 virtual users over 2 minutes
-  - **Stress Test:** Ramp up from 10 to 200 virtual users over 5 minutes
-  - **Spike Test:** Sudden jump to 200 virtual users for 30 seconds
+- **Purpose:** Compare performance impact of caching, evaluate throughput, and measure latency under load.
 
-### 2. Key Metrics
+---
 
-| Metric                 | Non-Cached API | Cached API |
-| ---------------------- | -------------- | ---------- |
-| Avg Response Time (ms) | 750            | 120        |
-| P90 Response Time (ms) | 1,200          | 150        |
-| P95 Response Time (ms) | 1,500          | 200        |
-| Max Response Time (ms) | 3,500          | 450        |
-| Min Response Time (ms) | 100            | 100        |
-| Requests per Second    | 650            | 2,400      |
-| Failed Requests        | 3%             | 0.2%       |
+### 2. Smoke Test
 
-### 3. Observations
+**Scenario:** 3 virtual users over 1 minute
 
-- The **cached API** drastically reduced response time and increased throughput.
-- Non-cached API struggled under high load, especially with large datasets (10,000+ transactions).
-- Spike tests revealed that caching helps prevent backend overload and reduces the number of failed requests.
+| Metric              | Non-Cached API | Cached API |
+| ------------------- | -------------- | ---------- |
+| Avg Response Time   | 2.36s          | 868.42ms   |
+| P90 Response Time   | 3.06s          | 1.29s      |
+| P95 Response Time   | 3.15s          | 1.3s       |
+| Max Response Time   | 3.39s          | 3.83s      |
+| Min Response Time   | 1.45s          | 442.74 ms  |
+| Requests per Second | 0.44           | 0.79       |
+| Failed Requests     | 0%             | 0%         |
 
-### 4. Conclusion
+**Observations:**
 
-- **In-memory caching** significantly improves performance for high-volume endpoints.
-- Proper **load and stress testing** allows us to identify bottlenecks and optimize API response.
-- The project demonstrates **real-world performance engineering skills**, including metrics monitoring, testing with k6, and backend optimization.
+- Cached API significantly reduces latency and increases throughput.
+- Non-cached API struggles under load, especially for large datasets.
+
+---
+
+### 3. Stress Test
+
+**Scenario:** Ramp up from 10 to 100 virtual users over 5 minutes
+
+| Metric              | Non-Cached API | Cached API |
+| ------------------- | -------------- | ---------- |
+| Avg Response Time   | 25.97s         | 7.99s      |
+| P90 Response Time   | 1m             | 16.79s     |
+| P95 Response Time   | 1m             | 21.3s      |
+| Max Response Time   | 1m             | 58.49s     |
+| Min Response Time   | 195.14ms       | 480.38ms   |
+| Requests per Second | 0.8            | 4.99       |
+| Failed Requests     | 56.11%         | 0%         |
+
+**Observations:**
+
+- Non-cached API shows increasing failures as virtual users increase.
+- Cached API maintains show no failures even under high user load, but with long latency.
+
+---
+
+### 4. Spike Test
+
+**Scenario:** Sudden jump to 200 virtual users for 30 seconds
+
+| Metric              | Non-Cached API | Cached API |
+| ------------------- | -------------- | ---------- |
+| Avg Response Time   | 43.86s         | 6.9s       |
+| P90 Response Time   | 59.93s         | 31.06s     |
+| P95 Response Time   | 59.97s         | 41.66s     |
+| Max Response Time   | 1m             | 53.02s     |
+| Min Response Time   | 2.34s          | 186.94ms   |
+| Requests per Second | 0.9            | 10.5       |
+| Failed Requests     | 52.3 %         | 59.56%     |
+
+**Observations:**
+
+- Sudden spike causes noticeable failures and high latency in non-cached API.
+- Cached API remains responsive, demonstrating the benefit of in-memory caching for burst traffic, although the failure rate is high.
+
+---
+
+### 5. Conclusion
+
+- **In-memory caching** drastically improves API performance, reduces latency, and increases throughput.
+- Load, stress, and spike tests help identify **backend bottlenecks** and optimize response times.
+- The testing demonstrates practical **performance engineering skills**, including load testing, caching strategies, and metrics analysis.
 
 ---
 
