@@ -257,7 +257,7 @@ pnpm test:cov
 
 - Github Actions used to automate:
   - Unit Tests
-  - Test coverage check (≥80% required)
+  - Test coverage check (≥69% required)
   - Deployment to Render Web Server
 - Render Deployment
   - Backend services hosted on Render Web Services (Node 20, pnpm)
