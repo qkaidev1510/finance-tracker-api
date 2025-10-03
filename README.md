@@ -1,73 +1,79 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Finance Tracker API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A **NestJS-based Finance Tracker API** designed for high-performance financial data handling, including transaction management, budgeting, summaries, and load/stress testing. Optimized for testing caching strategies, authentication, and API performance under various scenarios.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Project Overview](#project-overview)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Testing & Performance](#testing--performance)
+- [Setup & Run](#setup--run)
+- [CI/CD](#cicd)
+- [Key Achievements](#key-achievements)
 
-## Installation
+---
 
-```bash
-$ pnpm install
-```
+## Project Overview
 
-## Running the app
+The Finance Tracker API allows users to:
 
-```bash
-# development
-$ pnpm run start
+- Register and login securely
+- Track transactions (income/expenses)
+- Manage budgets and monitor remaining amounts
+- Generate financial summaries, including category-based reports
 
-# watch mode
-$ pnpm run start:dev
+The project includes **unit testing, load testing, stress testing, spike testing, and rate limiting strategies** for robust, production-ready API performance evaluation.
 
-# production mode
-$ pnpm run start:prod
-```
+---
 
-## Test
+## Tech Stack
 
-```bash
-# unit tests
-$ pnpm run test
+- **Backend:** NestJS (TypeScript)
+- **Database:** PostgreSQL (hosted on Render)
+- **ORM:** TypeORM
+- **Authentication:** JWT-based
+- **Testing:** Jest (unit & coverage ≥ 80%)
+- **Load & Stress Testing:** k6
+- **Deployment:** Render (Docker & Web Services)
+- **Reverse Proxy / Load Balancing (experimental):** Nginx
+- **Other Tools:** pnpm, Docker, Faker.js (mock data generation)
 
-# e2e tests
-$ pnpm run test:e2e
+---
 
-# test coverage
-$ pnpm run test:cov
-```
+## Features
 
-## Support
+### User Management
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Register new users with hashed passwords
+- Login and generate JWT tokens
+- Fetch user info securely
 
-## Stay in touch
+### Transactions
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- CRUD operations for transactions
+- Support for large datasets (e.g., 10,000+ records)
+- Optional caching layer for performance comparison
 
-## License
+### Budgeting
 
-Nest is [MIT licensed](LICENSE).
+- Create budgets per category
+- Get budgets and remaining amounts
+- Summarize spending per category
+
+### Financial Summaries
+
+- Monthly total income, expense, net balance
+- Category-wise breakdowns
+
+### Mock Data Generation
+
+- Generate up to 50,000 users and 100,000 transactions for testing
+- Generate budget data per user and category
+
+---
+
+## Architecture
