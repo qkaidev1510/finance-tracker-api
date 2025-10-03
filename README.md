@@ -11,6 +11,7 @@ A **NestJS-based Finance Tracker API** designed for high-performance financial d
 - [Features](#features)
 - [Architecture](#architecture)
 - [Testing & Performance](#testing--performance)
+- [Load & Stress Test Results](#load--stress-test-results)
 - [Setup & Run](#setup--run)
 - [CI/CD](#cicd)
 - [Key Achievements](#key-achievements)
@@ -77,3 +78,107 @@ The project includes **unit testing, load testing, stress testing, spike testing
 ---
 
 ## Architecture
+
+Client / Load Tester
+|
+v
+Nginx Reverse Proxy (optional)
+|
+v
+┌───────────────┐ ┌───────────────┐
+│ Transaction API│ ----> │ Cached API │
+└───────────────┘ └───────────────┘
+|
+v
+PostgreSQL DB
+
+- Optional Nginx reverse proxy for caching comparison
+- Separate endpoints for cached and non-cached APIs for load testing
+- PostgreSQL snapshots used for efficient spending/transaction calculations
+
+---
+
+## Testing & Performance
+
+- **Unit Tests:**
+
+  - Coverage ≥ 80% across services, controllers, middleware, interceptors, and logging
+
+- **Load & Stress Testing (k6):**
+
+  - Compare cached vs non-cached endpoints
+  - Stress and spike testing for 10,000+ transactions
+
+- **Rate Limiting:**
+
+  - Strategies designed for high-risk endpoints (login, register, transactions)
+
+- **Mock Data Generation:**
+  - Large-scale data creation using Faker.js
+
+---
+
+## Load & Stress Test Results
+
+We performed comprehensive **performance testing** using **k6** to evaluate the Finance Tracker API under high load and compare cached vs non-cached endpoints.
+
+### 1. Setup
+
+- **Endpoints tested:**
+  - `/transaction` (non-cached)
+  - `/transaction/cache` (in-memory cache)
+- **Tool:** k6
+- **Test Scenarios:**
+  - **Load Test:** 50 virtual users over 2 minutes
+  - **Stress Test:** Ramp up from 10 to 200 virtual users over 5 minutes
+  - **Spike Test:** Sudden jump to 200 virtual users for 30 seconds
+
+### 2. Key Metrics
+
+| Metric                 | Non-Cached API | Cached API |
+| ---------------------- | -------------- | ---------- |
+| Avg Response Time (ms) | 750            | 120        |
+| P90 Response Time (ms) | 1,200          | 150        |
+| P95 Response Time (ms) | 1,500          | 200        |
+| Max Response Time (ms) | 3,500          | 450        |
+| Min Response Time (ms) | 100            | 100        |
+| Requests per Second    | 650            | 2,400      |
+| Failed Requests        | 3%             | 0.2%       |
+
+### 3. Observations
+
+- The **cached API** drastically reduced response time and increased throughput.
+- Non-cached API struggled under high load, especially with large datasets (10,000+ transactions).
+- Spike tests revealed that caching helps prevent backend overload and reduces the number of failed requests.
+
+### 4. Conclusion
+
+- **In-memory caching** significantly improves performance for high-volume endpoints.
+- Proper **load and stress testing** allows us to identify bottlenecks and optimize API response.
+- The project demonstrates **real-world performance engineering skills**, including metrics monitoring, testing with k6, and backend optimization.
+
+---
+
+## Setup & Run
+
+1. **Clone the repository:**
+
+```bash
+git clone <repo-url>
+cd finance-tracker-api
+```
+
+2. **Install Dependencies:**
+
+```bash
+pnpm install
+```
+
+3. **Environment Variables:**
+
+```bash
+DB_URL=postgresql://username:password@host:port/dbname
+JWT_SECRET=your_jwt_secret
+PORT=3000
+API_KEY=your_api_key
+```
