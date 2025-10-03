@@ -182,3 +182,51 @@ JWT_SECRET=your_jwt_secret
 PORT=3000
 API_KEY=your_api_key
 ```
+
+4. **Build the project:**
+
+```bash
+pnpm build
+```
+
+5. **Run in development mode:**
+
+```bash
+pnpm start:dev
+```
+
+6. **Run tests with coverage:**
+
+```bash
+pnpm test:cov
+```
+
+---
+
+## CI/CD
+
+- Github Actions used to automate:
+  - Unit Tests
+  - Test coverage check (≥80% required)
+  - Deployment to Render Web Server
+- Render Deployment
+  - Backend services hosted on Render Web Services (Node 20, pnpm)
+  - Optional Nginx reserve proxy for load balancing and caching comparison
+
+---
+
+## Key Achievements/ Skilled Demonstrated
+
+- Advanced NestJS architecture and modular backend development
+- Database optimization with TypeORM and PostgreSQL snapshots
+- Comprehensive unit testing and test coverage analysis
+- Load, stress, and spike testing with k6
+- Implemented mock data generation for large-scale testing
+- Designed reverse proxy and caching architecture using Nginx (Dockerized)
+- CI/CD automation using GitHub Actions + Render deployment
+- Practical understanding of rate limiting, performance metrics, and API observability
+
+---
+
+**Author**: qkaidev1510
+**Project Status**: Production-ready backend with testing and performance evaluation.
