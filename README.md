@@ -230,5 +230,5 @@ pnpm test:cov
 
 ---
 
-**Author**: qkaidev1510
-**Project Status**: Production-ready backend with testing and performance evaluation.
+- **Author**: qkaidev1510
+- **Project Status**: Production-ready backend with testing and performance evaluation.
