@@ -79,6 +79,7 @@ The project includes **unit testing, load testing, stress testing, spike testing
 
 ## Architecture
 
+```bash
 Client / Load Tester
 |
 v
@@ -91,6 +92,7 @@ v
 |
 v
 PostgreSQL DB
+```
 
 - Optional Nginx reverse proxy for caching comparison
 - Separate endpoints for cached and non-cached APIs for load testing
